@@ -143,5 +143,71 @@ deletePost(1);
 ## 7. Send a POST request to https://jsonplaceholder.typicode.com/posts with Content-Type: application/json in headers. Log the response
 ### solution
 ```bash
+async function postRequest(postData){
+    const url = "https://jsonplaceholder.typicode.com/posts";
+    try {
+        const r = await fetch(url, {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(postData),
+        })
+        const d = await r.json();
+        console.log(d);
+    } catch (error) {
+        console.log(error);
+    }
+}
 
+const newPost = {
+    ID: 1,
+    title: "testing new post request" ,
+    body: "new post make success no null never know",
+}
+
+postRequest(newPost);
 ```
+## 8. Create a custom function request(url, options) that wraps fetch. Use it to GET users and POST a new post
+### solution
+```bash
+async function request(url, options={}){
+    try {
+        const r = await fetch(url, options);
+        const d = await r.json();
+        console.log("Success: ",d);
+    } catch (error) {
+        console.log(error);
+    }
+    
+}
+request("https://jsonplaceholder.typicode.com/posts");
+
+request("https://jsonplaceholder.typicode.com/posts", {
+    method: "POST",
+    headers: {"Content-Type":"application/json"},
+    body: JSON.stringify({
+        id: crypto.randomUUID(),
+        title: "How to make requests",
+        body: "Make requests like am doing right now",
+    })
+});
+```
+## 9. Make a fetch call to a broken URL and use .catch() or try...catch to show a user-friendly error message
+### solution
+```bash
+async function fakeCall(url){
+        try {
+            const r = await fetch(url);
+            if(!r.ok){
+                throw new Error(`Response status: ${r.status}`);
+            }
+            const d = await r.json();
+            console.log(d);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const API_url = "https://jsonplaceholder.typicode.co";
+
+    fakeCall(API_url);
+``` 
