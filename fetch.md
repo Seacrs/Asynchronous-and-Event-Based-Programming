@@ -211,3 +211,30 @@ async function fakeCall(url){
 
     fakeCall(API_url);
 ``` 
+
+### 10. Fetch the list of users from the JSONPlaceholder API:
+    - Endpoint: `https://jsonplaceholder.typicode.com/users`
+    - If the request fails, retry up to **3 times** before throwing an error.
+    Selects the first user from the retrieved list.
+### solution
+```bash
+async function fetchFirstUserPostsWithRetries(url, retries = 3, options={}){
+    let r = 0;
+    while(r < retries){
+        try{
+            const response = await fetch(url);
+            if(!response.ok){
+                throw new Error("Check the URL or your Internet connection! Try again later");
+            }
+            const d = await response.json();
+            console.log(d[0]);
+            return d[0];
+        }catch(error){
+            console.log(error.message);
+            r++;
+        }
+    }
+    console.error("Failed to retrieve");
+}
+fetchFirstUserPostsWithRetries("https://jsonplaceholder.typicode.com/users");
+```
