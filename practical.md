@@ -96,5 +96,31 @@ function myFetch(method, url, data){
 ### 5. Write a JavaScript function that fetches data from an API and retries the request a specified number of times if it fails.
 ### solution
 ```bash
+async function myFetch(url, retries = 3){
+        let c = 0;
+        let r = "";
+        while(c < retries){
+            r  = await fetch(url);
+            if(r.ok){
+                break;
+            }
+            c++;
+        }
+        if(c === retries){
+            throw new Error("Max retries reached");
+        }
+        const d = await r.json();
+        return d;
+}
 
+async function testMyFetch(){
+    try{
+        const n = await myFetch("https://jsonplaceholder.typicode.com/post", 5);
+        console.log(n);
+    } catch(e){
+        console.log(e.message);
+    }
+}
+
+testMyFetch();  
 ```
