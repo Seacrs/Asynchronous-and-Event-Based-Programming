@@ -211,7 +211,6 @@ async function fakeCall(url){
 
     fakeCall(API_url);
 ``` 
-
 ### 10. Fetch the list of users from the JSONPlaceholder API:
     - Endpoint: `https://jsonplaceholder.typicode.com/users`
     - If the request fails, retry up to **3 times** before throwing an error.
