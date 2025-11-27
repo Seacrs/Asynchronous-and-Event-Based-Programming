@@ -211,7 +211,39 @@ async function fakeCall(url){
 
     fakeCall(API_url);
 ``` 
-### 10. Fetch the list of users from the JSONPlaceholder API:
+## 10. Use AbortController to cancel a long-running fetch request (you can delay the response using a mock server or setTimeout)
+### solution
+``` bash
+const d = document.querySelector("#download-btn");
+const a = document.querySelector("#abort-btn");
+
+controller = new AbortController();
+let signal = controller.signal;
+
+d.addEventListener("click", download());
+a.addEventListener("click", ()=>{
+  if(controller){
+    controller.abort();
+    console.warn("User Aborted");
+  }
+})
+async function download(){
+  try{
+    const r = await fetch ("https://jsonplaceholder.typicode.com/users", {signal});
+    const d = await r.blob();
+    const url = URL.createObjectURL(d);
+    const l = document.createElement('a');
+    l.href = d;
+    link.download = "dummy.txt";
+    l.click();
+    URL.revokeObjectURL(url);
+
+  } catch (err) {
+    console.error(err.message);
+  }
+}
+```
+## 11. Fetch the list of users from the JSONPlaceholder API:
     - Endpoint: `https://jsonplaceholder.typicode.com/users`
     - If the request fails, retry up to **3 times** before throwing an error.
     Selects the first user from the retrieved list.
