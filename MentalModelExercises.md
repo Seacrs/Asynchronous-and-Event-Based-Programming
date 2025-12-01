@@ -100,5 +100,37 @@ fetchToDo("https://jsonplaceholder.typicode.com/todos/1");
 ## 5. Extend the fetchToDo function from Question 4 to include custom headers in the request. Specifically, you need to add a User-Agent header with a custom value and a Content-Type header set to application/json. Additionally, modify the function to send a JSON payload in the request body. After sending the request, the function should parse the JSON response and log the parsed object to the console.
 ### solution
 ```bash
+function fetchToDo(method, url, options){
+  return new Promise((resolve, reject)=>{
+    let xhr = new XMLHttpRequest();
+
+    xhr.open(method, url);
+    xhr.responseType = 'json';
+    if(options){
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.setRequestHeader('User-Agent', 'MyCustomValue');
+    }
+    xhr.onload = ()=>{
+        if(xhr.status >= 200 && xhr.status <300){
+          resolve(xhr.response);
+        }
+        else{
+          reject(`Http Error: ${xhr.status}`);
+        }
+    }
+    xhr.onerror = ()=>{
+      reject("Network Failure");
+    }
+  
+    xhr.send(JSON.stringify(options));
+  })
+}
+
+fetchToDo('POST', 'https://jsonplaceholder.typicode.com/posts',{
+  userId: 125,
+  id: 125,
+  title: "lorem ipsum toler",
+  body: "meanglisess endless can't stop me can't never"
+}).then(value => console.log(value)).catch(err => console.log(err));
 
 ```
