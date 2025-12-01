@@ -134,3 +134,151 @@ fetchToDo('POST', 'https://jsonplaceholder.typicode.com/posts',{
 }).then(value => console.log(value)).catch(err => console.log(err));
 
 ```
+## What is the output of the following code snippets
+```
+// Promise Chain
+
+const promise = new Promise((resolve, reject) => {
+  console.log('Promise created');
+  resolve('First resolve');
+});
+
+promise
+  .then((result) => {
+    console.log(result);
+    return 'Second resolve';
+  })
+  .then((result) => {
+    console.log(result);
+    throw new Error('Error in chain');
+  })
+  .catch((error) => {
+    console.error('Caught:', error.message);
+  })
+  .then(() => {
+    console.log('After catch');
+  });
+
+```
+### solution
+```bash
+# Expected output:
+# Promise created
+# First resolve
+# Second resolve
+# Caught: Error in chain
+# After catch
+```
+```
+// Async/Await with Promises
+
+async function asyncFunction() {
+  console.log('Inside async function');
+  return 'Async Function Result';
+}
+
+console.log('Start');
+
+asyncFunction().then((result) => {
+  console.log(result);
+});
+
+console.log('End');
+```
+### solution 
+```bash
+# Expected output:
+# Start
+# Inside async function
+# End
+# Async Function Result
+```
+
+```
+// Nested promises
+
+Promise.resolve('Outer Promise')
+  .then((result) => {
+    console.log(result);
+    return new Promise((resolve, reject) => {
+      console.log('Inner Promise created');
+      resolve('Inner Promise');
+    });
+  })
+  .then((result) => {
+    console.log(result);
+  });
+
+```
+### solution
+```bash
+# Expected output:
+# Outer Promise
+# Inner Promise created
+# Inner Promise
+```
+```
+console.log("Start");
+
+setTimeout(() => {
+  console.log("setTimeout 1");
+  Promise.resolve().then(() => {
+    console.log("promise 1");
+  });
+}, 0);
+
+new Promise(function (resolve, reject) {
+  console.log("promise 2");
+  setTimeout(function () {
+    console.log("setTimeout 2");
+    resolve("resolve 1");
+  }, 0);
+}).then((res) => {
+  console.log("dot then 1");
+  setTimeout(() => {
+    console.log(res);
+  }, 0);
+});
+```
+### solution
+```bash
+# Expected Output
+# Start
+# promise 2
+# setTimeout 1
+# promise 1
+# setTimeout 2
+# dot then 1
+# resolve 1
+```
+```
+console.log('Start');
+
+setTimeout(() => {
+  console.log('Timeout');
+}, 0);
+
+Promise.resolve()
+  .then(() => {
+    console.log('Promise 1');
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve('Promise 2');
+      }, 0);
+    });
+  })
+  .then((result) => {
+    console.log(result);
+  });
+
+console.log('End');
+```
+### solution
+```bash
+# Expected Output
+# Start
+# End
+# Promise 1
+# Timeout
+# Promise 2
+```
