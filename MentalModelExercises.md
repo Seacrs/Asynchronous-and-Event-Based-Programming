@@ -134,7 +134,7 @@ fetchToDo('POST', 'https://jsonplaceholder.typicode.com/posts',{
 }).then(value => console.log(value)).catch(err => console.log(err));
 
 ```
-## What is the output of the following code snippets
+## 6. What is the output of the following code snippets
 ```
 // Promise Chain
 
@@ -281,4 +281,45 @@ console.log('End');
 # Promise 1
 # Timeout
 # Promise 2
+```
+## 7. Create a function called myFetch that should work as a simple version of the native fetch() API. The function myFetch should use the XMLHttpRequest to make a GET Request and return a promise that resolves with the request's response and rejects with an error if any.
+
+```
+// Usage Example
+function myFetch(){
+    //... your code here
+}
+
+myFetch('https://jsonplaceholder.typicode.com/users')
+.then(data => console.log(data))
+.catch(error => console.log('Error:', error))
+```
+
+##
+
+### solution
+```bash
+function myFetch(url){
+  return new Promise((resolve, reject)=>{
+    let xhr = new XMLHttpRequest();
+    xhr.open('GET', url);
+    xhr.responseType = 'json';
+    xhr.onload = ()=>{
+      if(xhr.status >= 200 && xhr.status <=300){
+        return resolve(xhr.response);
+      }
+      else{
+        return reject(`Something went Wrong Error: ${xhr.status}`);
+      }
+    }
+    xhr.onerror = ()=>{
+      return reject(`Network failure`);
+    }
+    xhr.send();
+  })
+}
+
+myFetch('https://jsonplaceholder.typicode.com/users')
+.then(data => console.log(data))
+.catch(error => console.log('Error:', error))
 ```
