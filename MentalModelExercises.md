@@ -357,4 +357,41 @@ btn.addEventListener("click", async ()=>{
     addition();
 });
 ```
+## 9. Implement a timeout for an asynchronous fetch request. If the request takes longer than 3 milliseconds, it should be aborted. 
 
+```
+https://restcountries.eu/rest/v2/all
+```
+### solution
+```bash
+async function fetchToDo(url){
+
+  controller = new AbortController();
+  let signal = controller.signal;
+  const timeout = setTimeout(()=>{
+      controller.abort();
+    }, 2);
+
+  try{
+
+    const r = await fetch(url, {signal});
+    if(!r.ok){
+      throw new Error(`All is not well ${r.status}`);
+    }
+    const d = await r.json();
+    console.log(d);
+
+  } catch (err) {
+    
+    if(err.name === "AbortError"){
+      console.log("Request timed out");
+    }
+    else{
+      console.log(err.message)
+    }
+
+  }
+}
+
+fetchToDo("https://restcountries.eu/rest/v2/all");
+```
