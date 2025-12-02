@@ -323,3 +323,38 @@ myFetch('https://jsonplaceholder.typicode.com/users')
 .then(data => console.log(data))
 .catch(error => console.log('Error:', error))
 ```
+## 8. Create a button that counts clicks, but with a twist - after each click, the button should be disabled for 2 seconds while showing "Processing..." text. Once the delay is over, re-enable the button and show the updated count. This tests your ability to manage UI state during async operations triggered by user interactions.
+## Requirements:
+```
+    
+    - Button shows "Click me! Count: 0" initially
+    - When clicked, immediately show "Processing..." and disable button
+    - After 2 seconds, re-enable button and show new count
+    - Handle multiple rapid clicks properly (they should queue or be ignored)
+```
+##
+### solution
+```bash
+const btn = document.querySelector("#clickbtn");
+const update = document.querySelector("#text");
+
+let count = 0;
+
+function addition(){
+  count++;
+  update.textContent = count;
+}
+update.textContent = count;
+
+btn.addEventListener("click", async ()=>{
+    update.textContent = 'processing';
+    btn.setAttribute("disabled", true);
+    await new Promise((resolve)=>{
+      setTimeout(()=>{
+        resolve(btn.removeAttribute("disabled"));
+      }, 2000)
+    })
+    addition();
+});
+```
+
